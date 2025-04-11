@@ -1,0 +1,1 @@
+Generic core function implementation
