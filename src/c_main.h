@@ -53,5 +53,4 @@
 #define PLUTO_MAIN int main(int argc, char** argv)
 
 #endif
-#endif
 #endif // Include guard

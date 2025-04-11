@@ -99,7 +99,6 @@ int Application::Run(int *argc, char **argv, void *winHInstance) {
   }
   Cleanup();
   appFramework->StopAllModules();
-  allocator.reset();
   currentApp = nullptr;
   appFramework.reset();
   return returnCode;

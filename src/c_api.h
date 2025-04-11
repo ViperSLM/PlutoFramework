@@ -54,7 +54,7 @@
 #else
 // If compiling as a shared library (DLL, Windows only)
 #ifdef _WIN32
-#ifdef PLUTO_EXPORT_DLL
+#ifdef _PLUTO_EXPORT_DLL_
 #define PLUTO_API __declspec(dllexport)
 #define PLUTO_API_EXTERN
 #else
