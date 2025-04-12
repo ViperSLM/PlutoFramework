@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://viperslm.com/resources/pluto-framework/logo2-repo.png" alt="Pluto Framework" />
+  <img src="https://viperslm.com/resources/pluto-framework/logo-shadow.png" alt="Pluto Framework" />
 </p>
 
 # About
