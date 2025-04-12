@@ -72,11 +72,18 @@ public:
     // String initInfo;
     I_GetHost(&_hostInfo);
     getCompilerInfo();
+#if defined(_PLUTO_GIT_HASH_)
+// If there's a commit hash, use that instead
+    printInternal("Pluto Framework (%s)\nHost: %s\nCompiled with "
+    		  "%s\nBuild Timestamp: %s, %s\n\n", _PLUTO_GIT_HASH_,
+		  _hostInfo.Get(), _compilerInfo.Get(), __DATE__, __TIME__);
+#else
     printInternal("Pluto Framework v%d.%d.%d\nHost: %s\nCompiled with "
                   "%s\nBuild Timestamp: %s, %s\n\n",
                   _PLUTO_VERSION_MAJOR_, _PLUTO_VERSION_MINOR_,
                   _PLUTO_VERSION_PATCH_, _hostInfo.Get(), _compilerInfo.Get(),
                   __DATE__, __TIME__);
+#endif
   }
   ~Framework_Impl(void) {
     // De-initialise and unregister all modules from registry

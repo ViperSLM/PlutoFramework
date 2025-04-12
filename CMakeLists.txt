@@ -1,35 +1,52 @@
 cmake_minimum_required(VERSION 3.20)
 project(PlutoFramework)
 
-set(PLUTO_VERSION_MAJOR 1)
+# Main repo displays the version as a git commit hash,
+# rather than a definitive number
+set(PLUTO_VERSION_MAJOR 0)
 set(PLUTO_VERSION_MINOR 0)
 set(PLUTO_VERSION_PATCH 0)
+
+# Get commit hash if version string is set to 0.0.0
+if(PLUTO_VERSION_MAJOR EQUAL 0 AND PLUTO_VERSION_MINOR EQUAL 0 AND PLUTO_VERSION_PATCH EQUAL 0)
+	# Cheers, Jonathan!
+	# https://jonathanhamberg.com/post/cmake-embedding-git-hash
+	execute_process(
+		COMMAND git log -1 --format=%h
+		WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+		OUTPUT_VARIABLE PLUTO_GIT_HASH
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+	add_compile_definitions(_PLUTO_GIT_HASH_="${PLUTO_GIT_HASH}")
+else()
+add_compile_definitions(_PLUTO_VERSION_MAJOR_=${PLUTO_VERSION_MAJOR})
+add_compile_definitions(_PLUTO_VERSION_MINOR_=${PLUTO_VERSION_MINOR})
+add_compile_definitions(_PLUTO_VERSION_PATCH_=${PLUTO_VERSION_PATCH})
+endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Options go here
+# -- Options go here
 
-# End of options
+# -- End of options
 
 # Preparation
-add_compile_definitions(_PLUTO_VERSION_MAJOR_=${PLUTO_VERSION_MAJOR})
-add_compile_definitions(_PLUTO_VERSION_MINOR_=${PLUTO_VERSION_MINOR})
-add_compile_definitions(_PLUTO_VERSION_PATCH_=${PLUTO_VERSION_PATCH})
 
 set(LIBTYPE STATIC)
 if(BUILD_SHARED_LIBS)
 	set(LIBTYPE SHARED)
 	if(WIN32)
+		# This is needed to export functions marked with 'PLUTO_API'
 		add_compile_definitions(_PLUTO_EXPORT_DLL_)
 	endif()
 endif()
 
 set(CORE_SRC
 src/c_api.h
-src/c_application.h
-src/c_core.h
+src/c_application.h src/c_application.cpp
+src/c_core.h src/c_core.cpp
 src/c_coreptr.h
 src/c_intdef.h
 src/c_main.h
@@ -38,11 +55,8 @@ src/c_msgbox.h
 src/c_task.h
 src/i_system.h
 src/m_misc.h
-src/m_string.h
+src/m_string.h src/m_string.cpp
 src/PlutoFramework.h
-src/c_application.cpp
-src/c_core.cpp
-src/m_string.cpp
 )
 
 if(WIN32)
