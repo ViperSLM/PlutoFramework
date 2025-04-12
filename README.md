@@ -8,7 +8,7 @@ The main purpose behind the Pluto Framework library is to establish a simple loo
 # Building
 ## Pre-requisites:
 * C++ compiler w/ support for C++17 (tested with MSVC, GCC and Clang)
-  - ***Windows:** You can use either Visual Studio or MinGW-W64 (custom or through MSYS2)*
+  - ***Windows:** You can use either Visual Studio or MinGW-W64 (custom toolchain or through MSYS2)*
   - ***Unix/Unix-like OS's (Linux, FreeBSD/OpenBSD, Solaris/illumos, etc.):** GCC or Clang can be installed by either compiling manually or through a package manager*
   - ***macOS:** Clang can be installed by installing the Xcode Command Line Tools via the Terminal: `sudo xcode-select --install`*
 * CMake 3.20 or higher
