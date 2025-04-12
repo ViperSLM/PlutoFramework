@@ -174,7 +174,7 @@ public:
   void startRegisteredModules(void) {
     if (_modRegistry.empty()) {
       printInternal(
-          "! Framework::StartModules: No modules registered. Ignoring.");
+          "! Framework::StartModules: No modules registered. Ignoring.\n");
       return;
     }
 
