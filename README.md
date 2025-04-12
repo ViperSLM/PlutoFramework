@@ -5,11 +5,33 @@
 # About
 The main purpose behind the Pluto Framework library is to establish a simple loop when writing applications. On top of this, a module system is implemented to aid with the creation of subsystems to extend the library's functionality.
 
-# How to build
-Requirements:
-* C++ compiler w/ support for C++17
-* CMake
+# Building
+## Pre-requisites:
+* C++ compiler w/ support for C++17 (tested with MSVC, GCC and Clang)
+  - ***Windows:** You can use either Visual Studio or MinGW-W64 (custom or through MSYS2)*
+  - ***Unix/Unix-like OS's (Linux, FreeBSD/OpenBSD, Solaris/illumos, etc.):** GCC or Clang can be installed by either compiling manually or through a package manager*
+  - ***macOS:** Clang can be installed by installing the Xcode Command Line Tools via the Terminal: `sudo xcode-select --install`*
+* CMake 3.20 or higher
 
-Instructions:
+## Instructions:
 
-// TODO
+For most platforms, the framework library can be built by doing the following:
+1. Create a new folder in the repository *(e.g. build)* which will serve as the main build directory
+2. Under a command-line *(e.g. Command Prompt under Windows or Bash under Linux), invoke CMake to set up the build directory by typing in the following (assuming you named the folder 'build'):*
+   
+   `cmake -B build`
+   
+   **NOTE:** If you want to build the framework as a shared library *(which will appear in the form of a .dll on Windows, .dylib for macOS, or .so for Linux/BSD), append the 'BUILD_SHARED_LIBS' macro while invoking cmake:
+
+   `cmake -B build -DBUILD_SHARED_LIBS=ON`
+4. After the above command is finished, you can build the library by typing the following:
+   
+   `cmake --build build`
+6. If the build was successful, you should see the resulting library inside the build folder, which should appear as either a static library
+   
+   *(.lib for Windows, .a for everything else)* or if **BUILD_SHARED_LIBS** was set to ON, a shared library
+   
+   *(.dll for Windows, .dylib for macOS, .so for everything else)*.
+
+The core of the framework library itself doesn't need any dependencies apart from a C/C++ compiler w/ C++17 support and CMake.
+However, some modules might have some external dependencies.
