@@ -24,14 +24,15 @@ For most platforms, the framework library can be built by doing the following:
    **NOTE:** If you want to build the framework as a shared library, append '-DBUILD_SHARED_LIBS=ON' while invoking cmake:
 
    `cmake -B build -DBUILD_SHARED_LIBS=ON`
+
+   Additionally, if you also want to build the example programs, also append '-DPLUTO_BUILD_EXAMPLES=ON':
+
+   `cmake -B build -DPLUTO_BUILD_EXAMPLES=ON`
+
 4. After the above command is finished, you can build the library by typing the following:
    
    `cmake --build build`
-6. If the build was successful, you should see the resulting library inside the build folder, which should appear as either a static library
-   
-   *(.lib for Windows, .a for everything else)* or if **BUILD_SHARED_LIBS** was set to ON, a shared library
-   
-   *(.dll for Windows, .dylib for macOS, .so for everything else)*.
+6. If the build was successful, you should see the resulting library and example executable(s) inside the build folder.
 
 The core of the framework library itself doesn't need any dependencies apart from a C/C++ compiler w/ C++17 support and CMake.
 However, some modules might have some external dependencies.
