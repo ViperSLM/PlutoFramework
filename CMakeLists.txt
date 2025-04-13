@@ -29,6 +29,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # -- Options go here
+option(PLUTO_BUILD_EXAMPLES "Build example programs" OFF)
 
 # -- End of options
 
@@ -41,6 +42,8 @@ if(BUILD_SHARED_LIBS)
 		# This is needed to export functions marked with 'PLUTO_API'
 		add_compile_definitions(_PLUTO_EXPORT_DLL_)
 	endif()
+else()
+		add_compile_definitions(_PLUTO_STATIC_BUILD_)
 endif()
 
 set(CORE_SRC
@@ -88,8 +91,16 @@ else()
 	)
 endif()
 
+	
+
 # Build
 add_library(Pluto ${LIBTYPE} ${CORE_SRC} ${CORE_SYS_SRC})
 if(APPLE)
 	target_link_libraries(Pluto ${FOUNDATION_FRAMEWORK} ${APPKIT_FRAMEWORK})
+endif()
+
+if(PLUTO_BUILD_EXAMPLES)
+	add_executable(HelloWorld examples/helloworld.cpp)
+	target_include_directories(HelloWorld PRIVATE "${CMAKE_SOURCE_DIR}/src")
+	target_link_libraries(HelloWorld Pluto)
 endif()

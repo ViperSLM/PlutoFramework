@@ -1,4 +1,4 @@
-#include "../src/PlutoFramework.h"
+#include <PlutoFramework.h>
 
 class TestApp : public Pluto::Application {
 public:
