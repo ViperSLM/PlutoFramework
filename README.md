@@ -21,7 +21,7 @@ For most platforms, the framework library can be built by doing the following:
    
    `cmake -B build`
    
-   **NOTE:** If you want to build the framework as a shared library *(which will appear in the form of a .dll on Windows, .dylib for macOS, or .so for Linux/BSD), append the 'BUILD_SHARED_LIBS' macro while invoking cmake:
+   **NOTE:** If you want to build the framework as a shared library, append '-DBUILD_SHARED_LIBS=ON' while invoking cmake:
 
    `cmake -B build -DBUILD_SHARED_LIBS=ON`
 4. After the above command is finished, you can build the library by typing the following:
