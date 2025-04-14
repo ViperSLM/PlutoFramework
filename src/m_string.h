@@ -63,6 +63,9 @@ typedef enum {
 class PLUTO_API String {
 public:
   String(void);
+
+  /* Allows the string to be initialised with a value, printf-style. */
+  /* (i.e. String str("Hello World"); */
   String(const char *format, ...);
 
   ~String(void);
@@ -71,13 +74,13 @@ public:
    (Also, I like C's printf() better than C++'s std::cout) */
   void Set(const char *format, ...) const;
 
-  /* SetV is used in some situations. */
+  /* SetV takes a va_list data type for arguments. */
   void SetV(const char *format, va_list args, bool newLine = false) const;
 
   /* Returns the string's internal value as a C-style string */
   const char *Get(void) const;
 
-  /* Returns a Unicode string */
+  /* Returns a Unicode string [Only works under Windows] */
   const wchar_t *Get_WideString(void) const;
 
   /* Appends/Adds input into current string value */
@@ -100,7 +103,7 @@ public:
 private:
   void preset(const char *format, va_list args, bool newLine) const;
 
-  /* Pointer-to-Implementation, so I can avoid having include C++'s <string>
+  /* Pointer-to-Implementation, so I can avoid having to include C++'s <string>
    * header inside of this file */
   class String_Impl;
 #if defined(_WIN32) && !defined(PLUTO_STATIC_BUILD)

@@ -48,6 +48,7 @@
 #include <cstring>
 #include <vector>
 
+// Windows-specific stuff is just used for wide strings
 #if defined(_WIN32)
 #if !defined(WIN32_LEAN_AND_MEAN)
 #define WIN32_LEAN_AND_MEAN
