@@ -36,3 +36,6 @@ For most platforms, the framework library can be built by doing the following:
 
 The core of the framework library itself doesn't need any dependencies apart from a C/C++ compiler w/ C++17 support and CMake.
 However, some modules might have some external dependencies.
+
+# License
+This project is licensed under the terms of the BSD-3-Clause license. Check LICENSE for more info.
