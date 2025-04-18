@@ -1,6 +1,10 @@
 /*
   Pluto Framework
-  Copyright (C) 2023-2025 ViperSLM
+  Copyright (C) 2025 ViperSLM
+
+  This project is licensed under the terms of the 
+  BSD-3-Clause license. Check the LICENSE file 
+  for more info.
 
   DESCRIPTION:
   Stubbed out I_MessageBox function

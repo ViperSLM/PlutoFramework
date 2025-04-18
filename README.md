@@ -38,4 +38,5 @@ The core of the framework library itself doesn't need any dependencies apart fro
 However, some modules might have some external dependencies.
 
 # License
-This project is licensed under the terms of the BSD-3-Clause license. Check LICENSE for more info.
+This project is licensed under the terms of the BSD-3-Clause license.
+Check the LICENSE file for more info.
