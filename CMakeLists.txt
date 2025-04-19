@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 3.20)
 project(PlutoFramework)
 
+# 64-bit host?
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+	message("-- Host is 64-bit")
+    add_compile_definitions(_PLUTO_64BIT_)
+else()
+	message("-- Host is 32-bit")
+endif()
+
 # Main repo displays the version as a git commit hash,
 # rather than a definitive number
 set(PLUTO_VERSION_MAJOR 0)
@@ -18,10 +26,12 @@ if(PLUTO_VERSION_MAJOR EQUAL 0 AND PLUTO_VERSION_MINOR EQUAL 0 AND PLUTO_VERSION
 		OUTPUT_STRIP_TRAILING_WHITESPACE
 	)
 	add_compile_definitions(_PLUTO_GIT_HASH_="${PLUTO_GIT_HASH}")
+	set(PLUTO_VERSION_STRING "${PLUTO_GIT_HASH}")
 else()
-add_compile_definitions(_PLUTO_VERSION_MAJOR_=${PLUTO_VERSION_MAJOR})
-add_compile_definitions(_PLUTO_VERSION_MINOR_=${PLUTO_VERSION_MINOR})
-add_compile_definitions(_PLUTO_VERSION_PATCH_=${PLUTO_VERSION_PATCH})
+	add_compile_definitions(_PLUTO_VERSION_MAJOR_=${PLUTO_VERSION_MAJOR})
+	add_compile_definitions(_PLUTO_VERSION_MINOR_=${PLUTO_VERSION_MINOR})
+	add_compile_definitions(_PLUTO_VERSION_PATCH_=${PLUTO_VERSION_PATCH})
+	set(PLUTO_VERSION_STRING "${PLUTO_VERSION_MAJOR}.${PLUTO_VERSION_MINOR}.${PLUTO_VERSION_PATCH}")
 endif()
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -29,11 +39,32 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # -- Options go here
+option(PLUTO_DEBUG "Compile library with debug flags" OFF)
+option(PLUTO_DEBUG_ASAN "Use Address Sanitizer library (must be supported by and installed on host)" OFF)
 option(PLUTO_BUILD_EXAMPLES "Build example programs" OFF)
-
+option(PLUTO_NO_CSTDINT "Don't use C's stdint/stddef headers for integer sizes.\nThis should always be left off unless you have a\nreason to use the custom definitions." OFF)
 # -- End of options
 
 # Preparation
+
+# Debug flags
+if(PLUTO_DEBUG)
+	add_compile_definitions(_DEBUG)
+endif()
+
+if(PLUTO_CMAKE_CXX_COMPILER_ID EQUAL "GNU" OR CMAKE_CXX_COMPILER_ID EQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID EQUAL "Clang")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+	if(PLUTO_DEBUG)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g Wall")
+		if(PLUTO_DEBUG_ASAN)
+			message("-- Compiling with Address Sanitizer")
+			add_compile_option(-fsanitize=address)
+			add_link_options(-fsanitize=address)
+		endif()
+	else()
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -O2")
+	endif()
+endif()
 
 set(LIBTYPE STATIC)
 if(BUILD_SHARED_LIBS)
@@ -63,12 +94,21 @@ src/PlutoFramework.h
 )
 
 if(WIN32)
+	set(RC_FILE "")
+	if(BUILD_SHARED_LIBS)
+		configure_file(src/system/windows/pluto.rc.in pluto.rc)
+
+		# Just to help get around include shenanigans
+		configure_file(src/system/windows/resource.h.in resource.h)
+		set(RC_FILE "${PROJECT_BINARY_DIR}/pluto.rc")
+	endif()
 	set(CORE_SYS_SRC
 	src/system/windows/i_system.cpp
 	src/system/windows/i_msgbox.cpp
 	src/system/generic/i_log.cpp
 	src/system/generic/i_task.cpp
 	src/system/generic/i_wait.cpp
+	${RC_FILE}
 	)
 elseif(APPLE)
 	find_library(FOUNDATION_FRAMEWORK Foundation)
@@ -95,6 +135,10 @@ endif()
 
 # Build
 add_library(Pluto ${LIBTYPE} ${CORE_SRC} ${CORE_SYS_SRC})
+if(WIN32 AND BUILD_SHARED_LIBS)
+	target_include_directories(Pluto PRIVATE ${PROJECT_BINARY_DIR})
+endif()
+
 if(APPLE)
 	target_link_libraries(Pluto ${FOUNDATION_FRAMEWORK} ${APPKIT_FRAMEWORK})
 endif()
