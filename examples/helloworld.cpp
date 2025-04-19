@@ -5,8 +5,8 @@ public:
     void Init(void) override { hw.Set("Hello World!"); }
     void PostInit(void) override {}
     void Update(void) override { 
-        GetRunningFramework()->PrintLn("%s\n", hw.Get());
-        GetRunningFramework()->MessageBox("Test", hw, Pluto::PLUTO_MSGBOX_INFORMATION, Pluto::PLUTO_MSGBOXBTN_OK);
+        Pluto::GetFramework()->PrintLn("%s\n", hw.Get());
+        Pluto::GetFramework()->MessageBox("Test", hw, Pluto::PLUTO_MSGBOX_INFORMATION, Pluto::PLUTO_MSGBOXBTN_OK);
         Quit();
     }
     void PreRender(void) override {}

@@ -26,7 +26,7 @@ if(PLUTO_VERSION_MAJOR EQUAL 0 AND PLUTO_VERSION_MINOR EQUAL 0 AND PLUTO_VERSION
 		OUTPUT_STRIP_TRAILING_WHITESPACE
 	)
 	add_compile_definitions(_PLUTO_GIT_HASH_="${PLUTO_GIT_HASH}")
-	set(PLUTO_VERSION_STRING "${PLUTO_GIT_HASH}")
+	set(PLUTO_VERSION_STRING "Git ${PLUTO_GIT_HASH}")
 else()
 	add_compile_definitions(_PLUTO_VERSION_MAJOR_=${PLUTO_VERSION_MAJOR})
 	add_compile_definitions(_PLUTO_VERSION_MINOR_=${PLUTO_VERSION_MINOR})
@@ -149,6 +149,8 @@ endif()
 
 # Build
 add_library(Pluto ${LIBTYPE} ${CORE_SRC} ${CORE_SYS_SRC})
+set_target_properties(Pluto PROPERTIES OUTPUT_NAME PlutoFramework)
+set_target_properties(Pluto PROPERTIES PREFIX "")
 if(WIN32 AND BUILD_SHARED_LIBS)
 	target_include_directories(Pluto PRIVATE ${PROJECT_BINARY_DIR})
 endif()

@@ -79,7 +79,16 @@ public:
   // done after the Cleanup() function.
   void StopAllModules(void);
 
-  // Get module by name. Returns pointer to the found module if a match was found.
+  /*
+    Search for a registered module and return a pointer
+    to the found module, or nullptr if not found.
+ 
+    For derived classes, wrap a dynamic cast around
+    the function.
+ 
+    Example (Memory allocator module):
+    Memory *memAllocator = dynamic_cast<Memory*>(GetFramework()->GetModule("Memory"));
+  */
   Module *GetModule(const char *modName) const;
 
 private:

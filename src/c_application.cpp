@@ -11,6 +11,12 @@
   and storage for Framework class instance.
 */
 #include "c_application.h"
+
+// Needed to get around DLL linking issues
+#if defined(_WIN32) && !defined(_PLUTO_STATIC_BUILD_)
+#include "c_coreptr.h"
+#endif
+
 #include "c_core.h"
 
 #include <memory>
@@ -26,7 +32,7 @@ Application::Application(void) {
   currentApp = this;
 }
 
-Framework *Application::GetRunningFramework(void) { return GetFramework(); }
+// Framework *Application::GetRunningFramework(void) { return GetFramework(); }
 
 void Application::Quit(void) {
   appFramework->InvokeQuit();

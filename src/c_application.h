@@ -21,7 +21,8 @@ public:
   Application(void);
   virtual ~Application(void) = default;
 
-  Framework *GetRunningFramework(void);
+  //  Shouldn't be needed anymore
+//  Framework *GetRunningFramework(void);
   
   // Run(): Run the application and parse command-line arguments.
   // Returns exit code.
