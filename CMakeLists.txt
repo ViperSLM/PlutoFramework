@@ -149,7 +149,11 @@ endif()
 
 # Build
 add_library(Pluto ${LIBTYPE} ${CORE_SRC} ${CORE_SYS_SRC})
-set_target_properties(Pluto PROPERTIES OUTPUT_NAME PlutoFramework)
+if(${PLUTO_DEBUG})
+	set_target_properties(Pluto PROPERTIES OUTPUT_NAME PlutoFrameworkDebug)
+else()
+	set_target_properties(Pluto PROPERTIES OUTPUT_NAME PlutoFramework)
+endif()
 set_target_properties(Pluto PROPERTIES PREFIX "")
 if(WIN32 AND BUILD_SHARED_LIBS)
 	target_include_directories(Pluto PRIVATE ${PROJECT_BINARY_DIR})

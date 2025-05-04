@@ -70,6 +70,9 @@ public:
   // Unregister module from registry
   void UnregisterModule(uptr moduleAddr);
 
+  // Register and start module
+  void RegisterAndStartModule(Module *modulePtr);
+
   // Start all registered modules. Note that
   // this is already run in the Application loop,
   // so no need to use this.

@@ -29,7 +29,6 @@ class Framework::Framework_Impl {
 public:
   // Module pointer is paired together with a unique ID on creation
   typedef struct {
-    u64 modId;
     Module *module;
     bool registered; // Used for a neat efficiency trick
     bool started; // Has the module started? Only done with registered modules
@@ -115,6 +114,7 @@ public:
       }
     }
 
+   
     // Before creating a new module object, look for an unused entry in registry
     module_t *unusedModule = nullptr;
     for (module_t module : _modRegistry) {
@@ -123,6 +123,7 @@ public:
         break;
       }
     }
+    
 
     // If an unused entry was found during the loop, use that instead of
     // creating a new entry whilst also re-using the module ID (probably a bad
@@ -133,11 +134,10 @@ public:
       unusedModule->started = false;
       return;
     }
-
+    
     // The new module ID, pointer, and the registered flag are defined
-    module_t newModule{_moduleIDCount, mod, true, false};
+    module_t newModule{mod, true, false};
     _modRegistry.push_back(newModule);
-    _moduleIDCount++;
   }
 
   void startRegisteredModules(void) {
@@ -172,7 +172,7 @@ public:
 
   void unregisterModule(uptr modAddr) {
     bool found = false;
-    for (auto module = _modRegistry.rbegin(); module != _modRegistry.rend();
+    for (auto module = _modRegistry.begin(); module != _modRegistry.end();
          module++) {
       if (modAddr == module->module->GetMemoryAddress()) {
         found = true;
@@ -213,6 +213,16 @@ public:
     return match;
   }
 
+  void startModule(uptr modAddr) {
+    module_t *mod = findModuleWithAddr(modAddr);
+    if (mod != nullptr) {
+      if (!mod->started) {
+        mod->module->Start();
+        mod->started = true;
+      }
+    }
+  }
+
   void storeWinHInstance(void *hInstance) { _winHInstance = hInstance; }
   void *getWinHInstance(void) { return _winHInstance; }
 
@@ -223,7 +233,6 @@ private:
   String _compilerInfo;
   String _consoleLog;
 
-  u64 _moduleIDCount = 0;
   std::vector<u64> _unusedModIDs;
 
   std::vector<module_t> _modRegistry;
@@ -270,16 +279,6 @@ private:
       if (mod->started) {
         mod->module->Stop();
         mod->started = false;
-      }
-    }
-  }
-
-  void startModule(uptr modAddr) {
-    module_t *mod = findModuleWithAddr(modAddr);
-    if (mod != nullptr) {
-      if (!mod->started) {
-        mod->module->Start();
-        mod->started = true;
       }
     }
   }
@@ -333,6 +332,10 @@ void *Framework::GetWinHInstance(void) const {
 
 void Framework::RegisterModule(Module *modulePtr) {
   _impl->registerModule(modulePtr);
+}
+void Framework::RegisterAndStartModule(Module *modulePtr) {
+  _impl->registerModule(modulePtr);
+  _impl->startModule(modulePtr->GetMemoryAddress());
 }
 void Framework::UnregisterModule(uptr moduleAddr) {
   _impl->unregisterModule(moduleAddr);
