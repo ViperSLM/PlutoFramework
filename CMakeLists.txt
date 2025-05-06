@@ -125,11 +125,18 @@ if(WIN32)
 	${RC_FILE}
 	)
 elseif(APPLE)
+	# NSLog or printf?
+	option(PLUTO_USE_NSLOG "Use NSLog() from Apple's Cocoa API for logging [macOS only]" OFF)
+	if(PLUTO_USE_NSLOG)
+		set(CORE_SYS_LOG src/system/osx/i_log.mm)
+	else()
+		set(CORE_SYS_LOG src/system/generic/i_log.cpp)
+	endif()
 	find_library(FOUNDATION_FRAMEWORK Foundation)
 	find_library(APPKIT_FRAMEWORK AppKit)
 	set(CORE_SYS_SRC
 	src/system/osx/i_system.mm
-	src/system/osx/i_log.mm
+	${CORE_SYS_LOG}
 	src/system/osx/i_msgbox.mm
 	src/system/generic/i_task.cpp
 	src/system/generic/i_wait.cpp
