@@ -1,13 +1,17 @@
 <p align="center">
-  <img src="https://viperslm.com/resources/pluto-framework/logo-shadow.png" alt="Pluto Framework" />
+  <img src="https://viperslm.com/resources/pluto-framework/logo-github.png" alt="Pluto Framework" />
 </p>
+
+# Development Repository
+Changes that have to undergo testing and/or new code are pushed into this repository to ensure
+the changes are working as intended before being published into the main repository.
 
 # About
 The main purpose behind the Pluto Framework library is to establish a simple loop when writing applications. On top of this, a module system is implemented to aid with the creation of subsystems to extend the library's functionality.
 
 # Building
 ## Pre-requisites:
-* C++ compiler w/ support for C++17 (tested with MSVC, GCC and Clang)
+* C++ compiler w/ support for C++17 or better (tested with MSVC, GCC and Clang)
   - ***Windows:** You can use either Visual Studio or MinGW-W64 (custom toolchain or through MSYS2)*
   - ***Unix/Unix-like OS's (Linux, FreeBSD/OpenBSD, Solaris/illumos, etc.):** GCC or Clang can be installed by either compiling manually or through a package manager*
   - ***macOS:** Clang can be installed by installing the Xcode Command Line Tools via the Terminal: `sudo xcode-select --install`*
@@ -25,7 +29,7 @@ For most platforms, the framework library can be built by doing the following:
 
    `cmake -B build -DBUILD_SHARED_LIBS=ON`
 
-   Additionally, if you also want to build the example programs, also append '-DPLUTO_BUILD_EXAMPLES=ON':
+   Additionally, if you also want to build the example program(s), also append '-DPLUTO_BUILD_EXAMPLES=ON':
 
    `cmake -B build -DPLUTO_BUILD_EXAMPLES=ON`
 
@@ -38,5 +42,4 @@ The core of the framework library itself doesn't need any dependencies apart fro
 However, some modules might have some external dependencies.
 
 # License
-This project is licensed under the terms of the BSD-3-Clause license.
-Check the LICENSE file for more info.
+This project is licensed under the terms of the BSD-3-Clause license. Check LICENSE for more information.
