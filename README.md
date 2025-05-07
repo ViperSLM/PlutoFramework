@@ -2,10 +2,6 @@
   <img src="https://viperslm.com/resources/pluto-framework/logo-github.png" alt="Pluto Framework" />
 </p>
 
-# Development Repository
-Changes that have to undergo testing and/or new code are pushed into this repository to ensure
-the changes are working as intended before being published into the main repository.
-
 # About
 The main purpose behind the Pluto Framework library is to establish a simple loop when writing applications. On top of this, a module system is implemented to aid with the creation of subsystems to extend the library's functionality.
 
